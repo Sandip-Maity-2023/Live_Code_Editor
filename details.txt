@@ -1,0 +1,29 @@
+npm create vite@latest
+
+ npm i @tailwindcss/vite
+ code details.txt
+
+ https://www.npmjs.com/package/@monaco-editor/react
+ npm install @monaco-editor/react
+
+in server:
+ npm init -y
+ npm i express socket.io y-socket.io
+
+ in client:
+ https://yjs.dev/
+ npm i y-monaco y-socket.io yjs
+npm run build
+
+full frontend stored in dist folder[html,css,javascript]
+
+in root :
+
+code dockerfile
+docker build -t backend .
+
+docker run backend
+
+docker run -p 4000:3000 backend
+
+https://github.com/ankurdotio/docker-aws/blob/main/.dockerignore
