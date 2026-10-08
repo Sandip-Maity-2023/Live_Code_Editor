@@ -27,3 +27,11 @@ docker run backend
 docker run -p 4000:3000 backend
 
 https://github.com/ankurdotio/docker-aws/blob/main/.dockerignore
+
+Remove the broken node_modules
+Remove-Item -Recurse -Force node_modules
+
+
+Then delete Vite's cache:
+Remove-Item -Recurse -Force node_modules\.vite -ErrorAction SilentlyContinue
+
