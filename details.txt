@@ -35,3 +35,8 @@ Remove-Item -Recurse -Force node_modules
 Then delete Vite's cache:
 Remove-Item -Recurse -Force node_modules\.vite -ErrorAction SilentlyContinue
 
+
+
+docker build -t live-code-editor .
+docker run backend
+

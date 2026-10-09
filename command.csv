@@ -1,0 +1,81 @@
+ A Docker image is a lightweight, standalone, and executable software package that includes everything needed to run an application: code, runtime, system tools, system libraries, and settings.
+ 
+ To rebuild your Docker image after making changes to your frontend or backend code, you only need to run one core command.
+Run the following command in the terminal directory where your Dockerfile is located:
+bash
+docker build -t my-app:latest .
+
+# 1. Build the new image
+docker build -t my-app:latest .
+
+# 2. Stop the old container
+docker stop my-running-container
+
+# 3. Start a new container with the updated image
+docker run -d --name my-running-container -p 8080:8080 my-app:latest
+
+(Note: If you are using Docker Compose, you can simply run docker compose up --build -d to handle the building, stopping, and restarting all in one step.)
+-----------------------------------------
+
+ npm audit fix -> npm audit fix scans your project for security vulnerabilities and automatically installs compatible updates to vulnerable dependencies. It modifies your package-lock.json and updates the matching packages in node_modules without introducing breaking changes, as long as the packages follow strict semantic versioning (SemVer).
+
+ npm audit fix --force	Installs SemVer-major updates to top-level dependencies. ⚠️ Warning: This can introduce breaking changes and break your application.
+
+The command docker build . builds a Docker image from a Dockerfile located in your current working directory.
+
+ docker build -t live-code-server .
+
+• docker build: Tells Docker to compile a new container image.
+• -t live-code-server: Applies a human-readable tag (name) to the image so you can easily reference it later.
+• .: Specifies the build context. The dot tells Docker to look for the Dockerfile and source files in your current working directory.
+
+• docker run: Tells Docker to create and start a new container.
+• -p 3000:3000: Maps port 3000 on your host machine (left) to port 3000 inside the container (right). This lets you access the app by going to http://localhost:3000 in your web browser.
+• live-code-editor: The name of the Docker image you want to run.
+
+
+
+Stage 1: Building the Frontend
+
+dockerfile:
+FROM node:20-alpine as client-builder
+
+• What it does: Starts a temporary container environment using a lightweight, minimal version of Node.js 20 running on Alpine Linux.
+• Key detail: It names this environment client-builder so its output files can be referenced later.
+
+dockerfile:
+COPY ./client /app
+
+• What it does: Takes everything from the local client directory on your computer and copies it into a virtual folder named /app inside this temporary container.
+dockerfile:
+WORKDIR /app
+
+• What it does: Tells the container to step inside the /app folder. Any following commands will be executed here.
+dockerfile:
+RUN npm install
+RUN npm run build
+
+• What it does: Installs all the frontend dependencies (like React, Vue, Vite, etc.) and then triggers your build script. This step compresses and bundles your code, generating a ready-for-production dist folder containing basic HTML, CSS, and JavaScript.
+
+Stage 2: Setting up the Backend
+
+dockerfile:
+FROM node:20-alpine
+
+• What it does: Starts a brand-new, completely fresh Node.js environment. Everything from Stage 1 is tossed away except for the built files we explicitly ask for next. This keeps your final production image small and fast.
+dockerfile
+COPY ./server /app
+WORKDIR /app
+RUN npm install
+
+• What it does: Copies your local server folder into a virtual /app directory inside this new environment, switches into that directory, and installs your backend packages (like Express or Socket.io).
+dockerfile:
+COPY --from=client-builder /app/dist /app/public
+
+• What it does: This is the key step. It reaches back into the first environment (client-builder), grabs the compiled frontend files inside /app/dist, and drops them directly into the backend's /app/public folder.
+• Outcome: Your backend can now natively serve the frontend website as static files.
+dockerfile:
+CMD ["node", "server.js"]
+
+• What it does: Defines the final instruction. When you run your container, it executes node server.js to launch your web application
+
