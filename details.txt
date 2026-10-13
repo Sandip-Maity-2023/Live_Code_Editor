@@ -1,3 +1,7 @@
+GitHub: https://github.com/ankurdotio/docker-aws/blob/main/Backend/server.js
+YouTube: https://www.youtube.com/watch?v=Uf6PXnagtsg&t=5383s
+1:55
+
 npm create vite@latest
 
  npm i @tailwindcss/vite

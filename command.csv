@@ -79,3 +79,37 @@ CMD ["node", "server.js"]
 
 • What it does: Defines the final instruction. When you run your container, it executes node server.js to launch your web application
 
+-------
+after pushing changes to the repository, you can rebuild the Docker image and restart the container to see the updates live.
+1. Find what is using port 3000
+Run:
+docker ps
+
+
+If you see a container using 0.0.0.0:3000->3000/tcp, that container is already running.
+2. Choose one of these options
+
+Option A — Keep the existing Docker container
+If the first container is running,
+ open your browser:
+http://localhost:3000
+
+You don't need to run another container.
+
+Option B — Stop the existing container and restart
+docker ps
+docker stop <CONTAINER_ID>
+docker run -p 3000:3000 live-code-editor
+
+
+Replace <CONTAINER_ID> with the actual ID shown by docker ps.
+If your local Node server is occupying port 3000 instead, stop it in its terminal with Ctrl + C.
+
+Option C — Use a different host port
+docker run -p 3001:3000 live-code-editor
+
+
+Then open http://localhost:3001.
+ The container still listens on port 3000; only the host port changes.
+
+ 
